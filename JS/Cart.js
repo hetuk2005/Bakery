@@ -16,7 +16,7 @@ if (!token || token == "null" || token == "undefined") {
 setTimeout(() => {
   let cartDisplay = document.querySelector(".cartDisplay");
 
-  if (path == `../Cart.html` || path == `..//Cart.html`) {
+  if (path == `../Cart.html` || path == `../Cart.html`) {
     cartDisplay.style.display = "block";
     cartDisplay.style.opacity = 1;
   }

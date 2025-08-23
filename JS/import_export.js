@@ -40,10 +40,10 @@ export const Navbar = () => {
         </p>
         
         <ul class="rout_page_name">
-            <li class="homePage active">home</li>
-            <li>about</li>
-            <li class="loginFunc" >login</li>
-            <li class="cartFunc">cart</li>
+            <li class="homePage nav-link">home</li>
+            <li class="about nav-link">about</li>
+            <li class="loginFunc nav-link">login</li>
+            <li class="cartFunc nav-link">cart</li>
             <span class="cartDisplay"></span>
         </ul>
         <img src=${profileImg} alt="profile-logo">
@@ -171,6 +171,19 @@ export const NavStyle = () => {
             height: 50px;
         }
 
+        .rout_page_name > li {
+  /* color: rgba(255, 255, 255, 0.75); */
+  transition: all 0.3s ease-out;
+}
+
+.rout_page_name li.active {
+  content: "";
+  top: 0;
+  left: 0;
+  background: #000;
+  color: hsl(120 75% 50%/1);
+  border-radius: 10px;
+}
         `;
 };
 //  side-bar functionality start
@@ -225,3 +238,30 @@ export const typePlaceholder = () => {
     setTimeout(typePlaceholder, 1100);
   }
 };
+
+// Highlight Active Nav Item
+function setActiveNav() {
+  // Get current page name (like index.html, Login.html, Cart.html)
+  let currentPage = window.location.pathname.split("/").pop().toLowerCase();
+
+  // Select all nav links
+  const navItems = document.querySelectorAll(".rout_page_name .nav-link");
+
+  navItems.forEach((item) => {
+    // reset
+    item.classList.remove("active");
+
+    // Match based on text or condition
+    if (
+      (currentPage === "index.html" && item.classList.contains("homePage")) ||
+      (currentPage === "login.html" && item.classList.contains("loginFunc")) ||
+      (currentPage === "cart.html" && item.classList.contains("cartFunc")) ||
+      (currentPage === "about.html" && item.classList.contains("about"))
+    ) {
+      item.classList.add("active");
+    }
+  });
+}
+
+// Call it once when page loads
+document.addEventListener("DOMContentLoaded", setActiveNav);
