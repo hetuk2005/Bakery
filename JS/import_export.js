@@ -46,7 +46,7 @@ export const Navbar = () => {
             <li class="cartFunc nav-link">cart</li>
             <span class="cartDisplay"></span>
         </ul>
-        <img src=${profileImg} alt="profile-logo">
+        <img src="https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg" alt="profile-logo" id="avatar">
     </nav>
     `;
 };
@@ -265,3 +265,24 @@ function setActiveNav() {
 
 // Call it once when page loads
 document.addEventListener("DOMContentLoaded", setActiveNav);
+
+export const Avatar = () => {
+  const def_avatar =
+    "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg";
+
+  const avatarEl = document.querySelector("#avatar");
+  if (!avatarEl) {
+    console.error("Avatar element not found!");
+    return;
+  }
+
+  const save = sessionStorage.getItem("Avatar");
+
+  avatarEl.src = save || def_avatar;
+
+  avatarEl.addEventListener("click", () => {
+    sessionStorage.clear();
+    avatarEl.src = def_avatar;
+    window.location.href = "index.html";
+  });
+};

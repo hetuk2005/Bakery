@@ -277,6 +277,11 @@
 }
 
 /* login start  */
+
+span {
+  color: red;
+}
+
 .login-box {
   background-color: #fff;
   padding: 30px 50px;
@@ -298,11 +303,30 @@
   margin-bottom: 20px;
 }
 
+.gender {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#radiobtn1,
+#radiobtn {
+  cursor: grab;
+}
+
+.gender_parent {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  letter-spacing: 3px;
+}
+
 .form-group label {
-  margin-bottom: 6px;
+  cursor: text;
+  margin-bottom: 7px;
   font-size: 19px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: #444;
 }
 
 .form-group input {
@@ -319,15 +343,15 @@
 }
 
 .login-btn {
-  padding: 12px;
-  width: 200px;
+  padding: 11px;
   margin: auto;
   width: 100%;
   background-color: #4caf50;
   color: #fff;
-  font-size: 19px;
+  font-size: 17px;
+  font-weight: 700;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -345,11 +369,13 @@
 .login-box p a {
   color: #4caf50;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .login-box p a:hover {
   text-decoration: underline;
 }
+
 /* login end */
 
 /* table start  */

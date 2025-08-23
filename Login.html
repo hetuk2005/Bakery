@@ -17,13 +17,46 @@
         <div class="signup-container">
             <h2>Login</h2>
 
-            <form action="#" onsubmit="loginForm(event)">
-                <!-- <input name="name" type="text" placeholder="Full Name" required /> -->
-                <input name="email" type="email" placeholder="Email Address"
-                    required id="userEmail" />
-                <input name="password" type=" password" placeholder="Password"
-                    required id="userPassword" />
-                <!-- <input name="confirm password" type="password" placeholder="Confirm Password" required /> -->
+            <form onsubmit="loginForm(event)">
+
+                <div class="form-group">
+                    <label for="username">Email*</label>
+                    <input type="text" id="email"
+                        placeholder="Enter Email">
+                    <span id="email_message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password*</label>
+                    <input type="password" id="pass"
+                        placeholder="Enter password">
+                    <span id="pass_message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age*</label>
+                    <input type="number" placeholder="Enter Age" id="age">
+                    <span id="age_message"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="gender_parent">
+                        <label for="radiobtn">Gender*: </label>
+                        <div class="gender">
+                            <label for="radiobtn">Male</label>
+                            <input type="radio" name="content" value="Male"
+                                id="radiobtn">
+                        </div>
+                        <div class="gender">
+                            <label for="radiobtn">Female</label>
+                            <input type="radio" name="content" value="Female"
+                                id="radiobtn1">
+                        </div>
+                    </div>
+                    <span id="gender_message"></span>
+                </div>
+                <span id="radio_message"></span>
+
                 <button type="submit">login</button>
             </form>
             <p>Don't have an account? <a href="./Signup.html">sign up</a></p>

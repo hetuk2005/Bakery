@@ -110,7 +110,7 @@
             color: var(--sidebar-fg);
         }
 
-        .sidebar a {
+        .sidebar a, #activeFilter ul li {
             color: inherit;
             text-decoration: none;
             padding: 0.5rem 0.75rem;
@@ -180,6 +180,14 @@
                     aria-label="Close sidebar">✕</button>
             </header>
             <a href="#"><span>🏠</span> Home</a>
+            <div class="slide">
+                <h3>Filter</h3>
+                <div id="activeFilter"></div>
+                <ul>
+                    <li onclick="sortHigh(this)">High To Low</li>
+                    <li onclick="sortLow(this)">Low To High</li>
+                </ul>
+            </div>
             <a href="#"><span>📄</span> Docs</a>
             <a href="#"><span>📦</span> Products</a>
             <a href="#"><span>📞</span> Contact</a>
@@ -267,6 +275,51 @@
                 closeSidebar();
             }
         });
+
+          const filter = () => {
+    const side = document.querySelector(".slide");
+    // logo = !logo;
+    // side.style.display = logo == false ? "none" : "block";
+    side.classList.toggle("active");
+  };
+
+  window.sortHigh = async () => {
+    try {
+      const res = await fetch(api);
+      const data = await res.json();
+
+      const sortedData = data.sort((a, b) => b.price - a.price);
+      await appendsFunc(sortedData);
+
+      const activeFilter = document.querySelector("#activeFilter");
+      activeFilter.innerHTML = `
+            <span>High To Low</span>
+            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
+            `;
+      document.querySelector(".slide").classList.remove("active");
+    } catch (error) {
+      console.log("Error While Sorting High To Low: ", error);
+    }
+  };
+
+  window.sortLow = async () => {
+    try {
+      const res = await fetch(api);
+      const data = await res.json();
+
+      const sortedData1 = data.sort((a, b) => a.price - b.price);
+      await appendsFunc(sortedData1);
+
+      const activeFilter = document.querySelector("#activeFilter");
+      activeFilter.innerHTML = `
+            <span>Low To High</span>
+            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
+            `;
+      document.querySelector(".slide").classList.remove("active");
+    } catch (error) {
+      console.log("Error While Sorting Low To High: ", error);
+    }
+  };
     </script>
     </body>
 
