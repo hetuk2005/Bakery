@@ -201,6 +201,16 @@ export const SideBar = () => {
             <button class="btn" id="closeSidebar" aria-label="Close sidebar">✕</button>
         </header>
         <a href="#"><span>🏠</span> Home</a>
+
+            <div class="slide">
+                <h3>Filter</h3>
+                <div id="activeFilter"></div>
+                <ul>
+                    <li id="filterHigh">High To Low</li>
+                    <li id="filterLow">Low To High</li>
+                </ul>
+            </div>
+
         <a href="#"><span>📄</span> Docs</a>
         <a href="#"><span>📦</span> Products</a>
         <a href="#"><span>📞</span> Contact</a>
@@ -267,7 +277,7 @@ function setActiveNav() {
 document.addEventListener("DOMContentLoaded", setActiveNav);
 
 export const Avatar = () => {
-  const def_avatar =
+  const defAvatar =
     "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg";
 
   const avatarEl = document.querySelector("#avatar");
@@ -276,13 +286,84 @@ export const Avatar = () => {
     return;
   }
 
-  const save = sessionStorage.getItem("Avatar");
+  const savedAvatar = sessionStorage.getItem("Avatar");
 
-  avatarEl.src = save || def_avatar;
+  avatarEl.src = savedAvatar || defAvatar;
 
   avatarEl.addEventListener("click", () => {
     sessionStorage.clear();
-    avatarEl.src = def_avatar;
+    avatarEl.src = defAvatar;
     window.location.href = "index.html";
   });
 };
+
+export let allProducts = [];
+const container = document.querySelector("main");
+
+export async function fetchProducts() {
+  try {
+    const res = await fetch("http://localhost:3000/products");
+    const data = await res.json();
+    allProducts = data;
+    renderProducts(allProducts);
+
+    // ✅ Attach filter listeners ONLY after products are loaded
+    setupFilters();
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }
+}
+
+export function renderProducts(products) {
+  if (!container) return;
+  container.innerHTML = "";
+  products.forEach((p) => {
+    const card = document.createElement("div");
+    card.classList.add("card_div");
+    card.innerHTML = `
+      <img src="${p.image}" alt="${p.title}" />
+      <h3>${p.title}</h3>
+      <p>Category: ${p.category}</p>
+      <p>Price: $${p.price}</p>
+      <p>${p.description}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function setupFilters() {
+  const filterHigh = document.querySelector("#filterHigh");
+  const filterLow = document.querySelector("#filterLow");
+  const activeFilter = document.querySelector("#activeFilter");
+
+  if (filterHigh) {
+    filterHigh.addEventListener("click", () => {
+      const sorted = [...allProducts].sort((a, b) => b.price - a.price);
+      renderProducts(sorted);
+      activeFilter.innerHTML = `<span>High To Low</span> <button id="clearFilterBtn">✕</button>`;
+      attachClearListener(activeFilter);
+    });
+  }
+
+  if (filterLow) {
+    filterLow.addEventListener("click", () => {
+      const sorted = [...allProducts].sort((a, b) => a.price - b.price);
+      renderProducts(sorted);
+      activeFilter.innerHTML = `<span>Low To High</span> <button id="clearFilterBtn">✕</button>`;
+      attachClearListener(activeFilter);
+    });
+  }
+}
+
+function attachClearListener(activeFilter) {
+  const clearBtn = document.querySelector("#clearFilterBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      renderProducts(allProducts);
+      activeFilter.innerHTML = "";
+    });
+  }
+}
+
+// Run when DOM is ready
+document.addEventListener("DOMContentLoaded", fetchProducts);

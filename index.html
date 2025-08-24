@@ -19,12 +19,14 @@
 
         <div id="container"></div>
 
+        <main></main>
+
         <footer id="footers"></footer>
     </body>
     <script src="./JS/index.js"></script>
     <script type="module">
 
-    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, Avatar} from './JS/import_export.js'
+    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, Avatar , renderProducts, allProducts} from './JS/import_export.js'
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
 

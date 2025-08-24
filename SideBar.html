@@ -184,8 +184,8 @@
                 <h3>Filter</h3>
                 <div id="activeFilter"></div>
                 <ul>
-                    <li onclick="sortHigh(this)">High To Low</li>
-                    <li onclick="sortLow(this)">Low To High</li>
+                    <li id="filterHigh">High To Low</li>
+                    <li id="filterLow">Low To High</li>
                 </ul>
             </div>
             <a href="#"><span>📄</span> Docs</a>
@@ -275,51 +275,73 @@
                 closeSidebar();
             }
         });
+let allProducts = [];
+const container = document.querySelector("main");
 
-          const filter = () => {
-    const side = document.querySelector(".slide");
-    // logo = !logo;
-    // side.style.display = logo == false ? "none" : "block";
-    side.classList.toggle("active");
-  };
+const fetchProducts = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/products");
+    const data = await res.json();
+    allProducts = data;
+    renderProducts(allProducts);
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }
+};
 
-  window.sortHigh = async () => {
-    try {
-      const res = await fetch(api);
-      const data = await res.json();
+function renderProducts(products) {
+  if (!container) return;
+  container.innerHTML = "";
+  products.forEach(p => {
+    const card = document.createElement("div");
+    card.classList.add("card_div");
+    card.innerHTML = `
+      <img src="${p.image}" alt="${p.title}" />
+      <h3>${p.title}</h3>
+      <p>Category: ${p.category}</p>
+      <p>Price: $${p.price}</p>
+      <p>${p.description}</p>
+    `;
+    container.appendChild(card);
+  });
+}
 
-      const sortedData = data.sort((a, b) => b.price - a.price);
-      await appendsFunc(sortedData);
+// Attach listeners only after DOM content is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  fetchProducts();
 
-      const activeFilter = document.querySelector("#activeFilter");
-      activeFilter.innerHTML = `
-            <span>High To Low</span>
-            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
-            `;
-      document.querySelector(".slide").classList.remove("active");
-    } catch (error) {
-      console.log("Error While Sorting High To Low: ", error);
+  const filterHigh = document.querySelector("#filterHigh");
+  const filterLow = document.querySelector("#filterLow");
+  const activeFilter = document.querySelector("#activeFilter");
+
+  if (filterHigh) {
+    filterHigh.addEventListener("click", () => {
+      const sorted = [...allProducts].sort((a, b) => b.price - a.price);
+      renderProducts(sorted);
+      if (activeFilter) activeFilter.innerHTML = `<span>High To Low</span> <button id="clearFilterBtn">✕</button>`;
+      attachClearListener();
+    });
+  }
+
+  if (filterLow) {
+    filterLow.addEventListener("click", () => {
+      const sorted = [...allProducts].sort((a, b) => a.price - b.price);
+      renderProducts(sorted);
+      if (activeFilter) activeFilter.innerHTML = `<span>Low To High</span> <button id="clearFilterBtn">✕</button>`;
+      attachClearListener();
+    });
+  }
+
+  function attachClearListener() {
+    const clearBtn = document.querySelector("#clearFilterBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        renderProducts(allProducts);
+        if (activeFilter) activeFilter.innerHTML = "";
+      });
     }
-  };
-
-  window.sortLow = async () => {
-    try {
-      const res = await fetch(api);
-      const data = await res.json();
-
-      const sortedData1 = data.sort((a, b) => a.price - b.price);
-      await appendsFunc(sortedData1);
-
-      const activeFilter = document.querySelector("#activeFilter");
-      activeFilter.innerHTML = `
-            <span>Low To High</span>
-            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
-            `;
-      document.querySelector(".slide").classList.remove("active");
-    } catch (error) {
-      console.log("Error While Sorting Low To High: ", error);
-    }
-  };
+  }
+});
     </script>
     </body>
 
