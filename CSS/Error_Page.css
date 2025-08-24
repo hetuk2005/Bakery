@@ -1,0 +1,102 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  margin-top: 40px;
+  width: 15%;
+  animation: neonGlow 4s infinite alternate ease-in-out;
+}
+
+div {
+  cursor: default;
+  font-family: "Times New Roman", Times, serif;
+  letter-spacing: 7px;
+  margin-top: 30px;
+  font-size: 95px;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 80px white, 0 0 30px wheat, 0 0 6px whitesmoke;
+  color: black;
+}
+
+#error,
+#code {
+  margin: 0;
+}
+
+#error {
+  margin-top: 50px;
+}
+
+#code {
+  margin: 40px 0;
+}
+
+#error,
+#code {
+  color: #000;
+  text-shadow: 0 0 80px #000, 0 0 30px #000, 0 0 6px #000;
+}
+
+#error span,
+#code span:nth-of-type(2),
+#code span:nth-of-type(3) {
+  animation: upper 4s infinite alternate ease-in-out;
+}
+
+@keyframes upper {
+  0%,
+  19.999%,
+  22%,
+  62.999%,
+  64%,
+  64.999%,
+  70%,
+  100% {
+    opacity: 0.99;
+    text-shadow: 0 0 80px #000, 0 0 30px #000, 0 0 6px #000;
+  }
+
+  20%,
+  21.999%,
+  63%,
+  63.999%,
+  65%,
+  69.999% {
+    opacity: 0.3;
+    text-shadow: none;
+  }
+}
+
+@keyframes neonGlow {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #fff)
+      drop-shadow(0 0 20px #000) drop-shadow(0 0 40px #000)
+      drop-shadow(0 0 80px #000);
+    opacity: 1;
+  }
+  20%,
+  22%,
+  24%,
+  55% {
+    /* filter: none; */
+    opacity: 0.3;
+  }
+}

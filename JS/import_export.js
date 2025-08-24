@@ -264,14 +264,14 @@ function typeAndBlink() {
   typing = setInterval(() => {
     cursorVisible = !cursorVisible;
     updatePlaceholder();
-  }, 0.3);
+  }, 100);
 
   function typeChar() {
     if (!input) return;
     if (i <= text.length) {
       updatePlaceholder();
       i++;
-      setTimeout(typeChar, 0.5);
+      setTimeout(typeChar, 100);
     } else {
       clearInterval(typing);
       startBlinkAtEnd();
