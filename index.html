@@ -97,6 +97,12 @@
         }
     });
     // side bar code end
+    
+//Day-Night-mode-code
+const btn = document.getElementById("toggleBtn");
+btn.addEventListener("click", () => {
+  body.classList.toggle("dark");
+});
 
     setTimeout(() => {
         setActiveNav();
