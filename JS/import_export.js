@@ -215,13 +215,16 @@ export const SideBar = () => {
         <a href="#"><span>🏠</span> Home</a>
 
             <div class="slide">
-                <h3>Filter</h3>
+              <div class="div_filter">
+                <span><img src="../Utils/Filter.svg"></img></span><h3>Filter</h3>
+              </div>
                 <div id="activeFilter"></div>
-                <ul>
+                <ul class="filter">
                     <li id="filterHigh">High To Low</li>
                     <li id="filterLow">Low To High</li>
                 </ul>
             </div>
+            <select name="Filter" id="filter" onchange="filterFunc()"></select>
 
         <a href="#"><span>📄</span> Docs</a>
         <a href="#"><span>📦</span> Products</a>
@@ -339,36 +342,40 @@ export const setActiveNav = () => {
   });
 };
 
-function setupFilters() {
-  const filterHigh = document.querySelector("#filterHigh");
-  const filterLow = document.querySelector("#filterLow");
-  const activeFilter = document.querySelector("#activeFilter");
+export const sortHigh = async () => {
+  try {
+    const res = await fetch(apiProducts);
+    const data = await res.json();
 
-  if (filterHigh) {
-    filterHigh.addEventListener("click", () => {
-      const sorted = [...allProducts].sort((a, b) => b.price - a.price);
-      renderProducts(sorted);
-      activeFilter.innerHTML = `<span>High To Low</span> <button id="clearFilterBtn">✕</button>`;
-      attachClearListener(activeFilter);
-    });
-  }
+    const sortedData = data.sort((a, b) => b.price - a.price);
+    await appendsFunc(sortedData);
 
-  if (filterLow) {
-    filterLow.addEventListener("click", () => {
-      const sorted = [...allProducts].sort((a, b) => a.price - b.price);
-      renderProducts(sorted);
-      activeFilter.innerHTML = `<span>Low To High</span> <button id="clearFilterBtn">✕</button>`;
-      attachClearListener(activeFilter);
-    });
+    const activeFilter = document.querySelector("#activeFilter");
+    activeFilter.innerHTML = `
+            <span>High To Low</span>
+            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
+            `;
+    document.querySelector(".slide").classList.remove("active");
+  } catch (error) {
+    console.log("Error While Sorting High To Low: ", error);
   }
-}
+};
 
-function attachClearListener(activeFilter) {
-  const clearBtn = document.querySelector("#clearFilterBtn");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      renderProducts(allProducts);
-      activeFilter.innerHTML = "";
-    });
+export const sortLow = async () => {
+  try {
+    const res = await fetch(apiProducts);
+    const data = await res.json();
+
+    const sortedData1 = data.sort((a, b) => a.price - b.price);
+    await appendsFunc(sortedData1);
+
+    const activeFilter = document.querySelector("#activeFilter");
+    activeFilter.innerHTML = `
+            <span>Low To High</span>
+            <button onclick="clearFilter()"><img src="./Utils/Close.svg"></button>
+            `;
+    document.querySelector(".slide").classList.remove("active");
+  } catch (error) {
+    console.log("Error While Sorting Low To High: ", error);
   }
-}
+};

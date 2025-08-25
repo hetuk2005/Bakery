@@ -501,7 +501,7 @@ body.dark {
   color: #fff;
 }
 
-.btn {
+#toggleBtn {
   width: 50px;
   height: 50px;
   background: #fff;
@@ -541,4 +541,47 @@ body.dark .btn strong:nth-child(1) {
 
 body.dark .btn strong:nth-child(2) {
   display: none;
+}
+
+.div_filter {
+  margin: 0 7px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.div_filter span img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.high {
+  background-color: #444;
+  padding: 3px 10px;
+  margin: 0 40px;
+  margin-top: 20px;
+  border-radius: 7px;
+  color: red;
+}
+
+#closeFilter {
+  color: whitesmoke;
+}
+
+#filterHigh:hover,
+#filterLow:hover {
+  background-color: #222;
+}
+
+h3 {
+  font-size: 16px;
+  padding-top: 6px;
+  margin-bottom: 10px;
+}
+
+.filter {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  margin-top: 5px;
 }

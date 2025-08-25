@@ -12,7 +12,7 @@
 
     </head>
 
-    <body id="index_body" onload="paginationFetch(pageLimits, pages)">
+    <body id="index_body">
         <header class="header"></header>
 
         <div id="pagination"></div>
@@ -23,7 +23,7 @@
 
         <footer id="footers"></footer>
     </body>
-    <script src="./JS/index.js"></script>
+    <script type="module" src="./JS/index.js"></script>
     <script type="module">
 
     import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav} from './JS/import_export.js'
@@ -107,6 +107,11 @@ btn.addEventListener("click", () => {
     setTimeout(() => {
         setActiveNav();
     }, 100)
+
+    
+// document.querySelector("#filterHigh").addEventListener("click", sortHigh);
+// document.querySelector("#filterLow").addEventListener("click", sortLow);
+
 </script>
 
 </html>

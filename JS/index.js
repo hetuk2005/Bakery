@@ -174,3 +174,87 @@ document.querySelector("#decrementBtn").addEventListener("click", () => {
   countPages.innerText = pages;
   paginationFetch(pageLimits, pages);
 });
+
+let allProductsGlobal = [];
+
+const fetchAllProducts = async () => {
+  try {
+    const res = await fetch(apiProducts);
+    allProductsGlobal = await res.json();
+  } catch (err) {
+    console.error("Error fetching all products:", err);
+  }
+};
+
+import { sortHigh, sortLow } from "./import_export.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const highBtn = document.querySelector("#filterHigh");
+  const lowBtn = document.querySelector("#filterLow");
+
+  function filterHigh(arr) {
+    return [...arr].sort((a, b) => b.price - a.price);
+  }
+
+  function filterLow(arr) {
+    return [...arr].sort((a, b) => a.price - b.price);
+  }
+
+  if (highBtn) {
+    highBtn.addEventListener("click", () => {
+      let filtered = filterHigh(allProductsGlobal);
+      renderTheUI(filtered);
+
+      // show span with close
+      activeFilter.innerHTML = `<span class="high">High to Low <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
+
+      // add close event
+      document.querySelector("#closeFilter").addEventListener("click", () => {
+        activeFilter.innerHTML = "";
+        renderTheUI(allProducts); // reset to normal products
+      });
+    });
+  }
+
+  if (lowBtn) {
+    lowBtn.addEventListener("click", () => {
+      let filtered = filterLow(allProductsGlobal);
+      renderTheUI(filtered);
+
+      // show span with close
+      activeFilter.innerHTML = `<span class="high">Low to High <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
+
+      // add close event
+      document.querySelector("#closeFilter").addEventListener("click", () => {
+        activeFilter.innerHTML = "";
+        renderTheUI(allProducts); // reset to normal products
+      });
+    });
+  }
+});
+
+const filterFunc = async () => {
+  let filter = document.querySelector("#filter").value;
+  // e.g. "electronics", "jewelery", etc.
+
+  try {
+    let res = await fetch(apiProducts);
+    let data = await res.json();
+
+    // filter products by category
+    let filterArr = data.filter((el) => el.category === filter);
+
+    console.log("FilterArr: ", filterArr); // now works
+
+    renderTheUI(filterArr); // no need for await unless it's async
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+};
+
+window.filterFunc = filterFunc;
+
+document.addEventListener("DOMContentLoaded", () => {
+  paginationFetch(pageLimits, pages);
+  fetchAllProducts();
+});
