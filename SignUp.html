@@ -43,7 +43,7 @@
     <script defer src="./JS/SignUp.js"></script>
     <script type="module">
 
-    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder } from './JS/import_export.js'
+    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder,  setActiveNav} from './JS/import_export.js'
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
     document.querySelector('body').addEventListener('load', typePlaceholder());
@@ -110,6 +110,10 @@
         }
     });
     // side bar code end
+    
+    setTimeout(() => {
+        setActiveNav();
+    }, 100)
 </script>
 
 </html>

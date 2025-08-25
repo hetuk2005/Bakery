@@ -26,14 +26,11 @@
     <script src="./JS/index.js"></script>
     <script type="module">
 
-    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, Avatar , renderProducts, allProducts} from './JS/import_export.js'
+    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav} from './JS/import_export.js'
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
 
-Avatar();
-typePlaceholder();
-
-//    addEventListener('DOMContentLoaded', ()=> {typePlaceholder(), Avatar()});
+   addEventListener('DOMContentLoaded', ()=> {typePlaceholder()});
 
     let styleTag = document.createElement("style");
     styleTag.textContent = NavStyle();
@@ -86,6 +83,9 @@ typePlaceholder();
     // Close with Escape
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && body.classList.contains('sidebar-open')) {
+
+
+
             closeSidebar();
         }
     });
@@ -98,6 +98,9 @@ typePlaceholder();
     });
     // side bar code end
 
+    setTimeout(() => {
+        setActiveNav();
+    }, 100)
 </script>
 
 </html>

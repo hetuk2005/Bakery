@@ -311,35 +311,8 @@ export const typePlaceholder = () => {
   typeAndBlink();
 };
 
-// export const typePlaceholder = () => {
-//   input = document.querySelector("#search");
-//   if (!input) return;
-//   if (i <= text.length) {
-//     input.setAttribute("placeholder", text.substring(0, i) + "|");
-//     i++;
-//     setTimeout(typePlaceholder, 100);
-//   } else if (showCursor) {
-//     showCursor = false;
-//     interval();
-//   }
-
-//   function blinkCursor() {
-//     let visible = true;
-//     blinkInterval = setInterval(() => {
-//       if (!input) return;
-//       let placeholderText = input.getAttribute("placeholder");
-//       if (visible) {
-//         input.setAttribute("placeholder", placeholderText.replace("|", " "));
-//       } else {
-//         input.setAttribute("placeholder", placeholderText.replace(" ", "|"));
-//       }
-//       visible = !visible;
-//     }, 500);
-//   }
-// };
-
 // Highlight Active Nav Item
-function setActiveNav() {
+export const setActiveNav = () => {
   // Get current page name (like index.html, Login.html, Cart.html)
   let currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
@@ -360,65 +333,7 @@ function setActiveNav() {
       item.classList.add("active");
     }
   });
-}
-
-// Call it once when page loads
-document.addEventListener("DOMContentLoaded", setActiveNav);
-
-export const Avatar = () => {
-  const defAvatar =
-    "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg";
-
-  const avatarEl = document.querySelector("#avatar");
-  if (!avatarEl) {
-    console.error("Avatar element not found!");
-    return;
-  }
-
-  const savedAvatar = sessionStorage.getItem("Avatar");
-
-  avatarEl.src = savedAvatar || defAvatar;
-
-  avatarEl.addEventListener("click", () => {
-    sessionStorage.clear();
-    avatarEl.src = defAvatar;
-    window.location.href = "index.html";
-  });
 };
-
-export let allProducts = [];
-const container = document.querySelector("main");
-
-export async function fetchProducts() {
-  try {
-    const res = await fetch("http://localhost:3000/products");
-    const data = await res.json();
-    allProducts = data;
-    renderProducts(allProducts);
-
-    // ✅ Attach filter listeners ONLY after products are loaded
-    setupFilters();
-  } catch (err) {
-    console.error("Error fetching products:", err);
-  }
-}
-
-export function renderProducts(products) {
-  if (!container) return;
-  container.innerHTML = "";
-  products.forEach((p) => {
-    const card = document.createElement("div");
-    card.classList.add("card_div");
-    card.innerHTML = `
-      <img src="${p.image}" alt="${p.title}" />
-      <h3>${p.title}</h3>
-      <p>Category: ${p.category}</p>
-      <p>Price: $${p.price}</p>
-      <p>${p.description}</p>
-    `;
-    container.appendChild(card);
-  });
-}
 
 function setupFilters() {
   const filterHigh = document.querySelector("#filterHigh");
@@ -453,6 +368,3 @@ function attachClearListener(activeFilter) {
     });
   }
 }
-
-// Run when DOM is ready
-document.addEventListener("DOMContentLoaded", fetchProducts);
