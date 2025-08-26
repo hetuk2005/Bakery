@@ -254,7 +254,24 @@ const filterFunc = async () => {
 
 window.filterFunc = filterFunc;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   paginationFetch(pageLimits, pages);
   fetchAllProducts();
+
+  try {
+    let res = await fetch(apiProducts);
+    let data = await res.json();
+    let categories = [...new Set(data.map((el) => el.category))];
+
+    let filterSelect = document.querySelector("#filter");
+    filterSelect.innerHTML = `<option value="" class="filterOption">   Select Category   </option>`;
+    categories.forEach((cat) => {
+      let opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = cat;
+      filterSelect.appendChild(opt);
+    });
+  } catch (error) {
+    console.log("Error populating categories:", error);
+  }
 });

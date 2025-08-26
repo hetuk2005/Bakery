@@ -585,3 +585,14 @@ h3 {
   grid-template-columns: repeat(1, 1fr);
   margin-top: 5px;
 }
+
+.filterOption,
+#filter {
+  background-color: black;
+  color: hsl(120 75% 50%/1);
+}
+
+#filter {
+  padding: 5px 20px;
+  border: 2px solid whitesmoke;
+}
