@@ -62,7 +62,6 @@ const renderTheUI = (value) => {
             </div>
         `;
 
-    // pick the <img> we just injected
     const img = card.querySelector("img");
 
     if (img.complete) {
