@@ -26,3 +26,7 @@ const loginForm = async (e) => {
     console.log("🚀 ~ error:", error);
   }
 };
+
+const home = () => {
+  window.location = "";
+};

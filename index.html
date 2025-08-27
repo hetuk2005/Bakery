@@ -26,9 +26,11 @@
     <script type="module" src="./JS/index.js"></script>
     <script type="module">
 
-    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav} from './JS/import_export.js'
+    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav, avatarLoader} from './JS/import_export.js'
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
+
+avatarLoader();
 
    addEventListener('DOMContentLoaded', ()=> {typePlaceholder()});
 

@@ -122,6 +122,9 @@ const loginForm = async (e) => {
   if (data.accessToken) {
     sessionStorage.setItem("token", data.accessToken);
 
+    sessionStorage.setItem("age", age);
+    sessionStorage.setItem("gender", gender);
+
     try {
       let ageres = await fetch(ageApi);
       let ageData = await ageres.json();
@@ -135,7 +138,7 @@ const loginForm = async (e) => {
 
       let avtarObj = ageData.find(
         (item) =>
-          item.title === ageRange &&
+          item.title.toLowerCase() === ageRange.toLowerCase() &&
           item.gender.toLowerCase() === gender.toLowerCase()
       );
 
@@ -153,25 +156,3 @@ const loginForm = async (e) => {
     window.location = "index.html";
   }
 };
-
-// try {
-//   let res = await fetch(apiLogin, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify(userData),
-//   });
-//   let data = await res.json();
-
-//   if (data.accessToken) {
-//     sessionStorage.setItem("token", JSON.stringify(data.accessToken));
-//     window.location.pathname = "../index.html";
-//   } else if (data === "Cannot find user") {
-//     alert("data coudn't found");
-//     window.location = "SignUp.html";
-//   }
-// } catch (error) {
-//   console.log("🚀 ~ error:", error);
-// }

@@ -46,7 +46,7 @@ export const Navbar = () => {
             <li class="cartFunc nav-link">cart</li>
             <span class="cartDisplay"></span>
         </ul>
-        <img src="https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg" alt="profile-logo" id="avatar">
+        <img src="" alt="profile-logo" id="avatar">
         <div class="btn" id="toggleBtn">
          <strong>🌙</strong> 
       <strong>☀️</strong>
@@ -377,5 +377,18 @@ export const sortLow = async () => {
     document.querySelector(".slide").classList.remove("active");
   } catch (error) {
     console.log("Error While Sorting Low To High: ", error);
+  }
+};
+
+export const avatarLoader = () => {
+  const avatarImg = document.querySelector("#avatar");
+
+  const avatarUrl = sessionStorage.getItem("Avatar");
+
+  if (avatarUrl && avatarImg) {
+    avatarImg.src = avatarUrl;
+  } else {
+    avatarImg.src =
+      "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg";
   }
 };
