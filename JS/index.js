@@ -45,8 +45,12 @@ const renderTheUI = (value) => {
   value.forEach((el) => {
     const card = document.createElement("div");
     card.classList.add("card_div");
-    card.innerHTML = `
-            <img class="image" src=${el.image} />
+
+    card.innerHTML = ` 
+            <div class="img-wrapper">
+        <div class="skeleton skeleton-image"></div>
+        <img class="image blur" src="${el.image}" loading="lazy" alt="product" />
+      </div>
             <div class="info">
                 <h3 class="id">id : ${el.id}</h3>
                 <p class="category">category : ${el.category}</p>
@@ -57,6 +61,24 @@ const renderTheUI = (value) => {
                     <button onclick="addToCart(${el.id})" class="btns">add</button>
             </div>
         `;
+
+    // pick the <img> we just injected
+    const img = card.querySelector("img");
+
+    if (img.complete) {
+      img.classList.add("loaded");
+      const skeleton = card.querySelector(".skeleton-image");
+      skeleton.style.opacity = 0;
+      setTimeout(() => skeleton.remove(), 400);
+    } else {
+      img.addEventListener("load", () => {
+        img.classList.add("loaded");
+        const skeleton = card.querySelector(".skeleton-image");
+        skeleton.style.opacity = 0;
+        setTimeout(() => skeleton.remove(), 400);
+      });
+    }
+
     container.appendChild(card);
   });
 };
