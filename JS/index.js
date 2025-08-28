@@ -41,7 +41,22 @@ const showSkeleton = (count = 6) => {
 };
 
 const renderTheUI = (value) => {
+  //  here i am creating the div inside that i am just adding the img
+  const prevContainer = document.querySelector(".containers");
+
+  const carouselContainer = document.createElement("div");
   container.innerHTML = ""; // Remove skeletons
+
+  //  here i am doing if i have the container then i will delete the previous one and append the new one....
+
+  if (prevContainer) prevContainer.remove();
+
+  carouselContainer.classList.add("containers");
+  carouselContainer.id = "carousel";
+  // ✅ append containers only ONCE
+  // document.body.prepend(carouselContainer);
+  document.body.insertBefore(carouselContainer, container);
+
   value.forEach((el) => {
     const card = document.createElement("div");
     card.classList.add("card_div");
@@ -82,6 +97,11 @@ const renderTheUI = (value) => {
         setTimeout(() => skeleton.remove(), 400);
       });
     }
+
+    // img.src = el.image;
+    // img.alt = `img-${el.id}`;
+    // img.classList.add("cards-imgs");
+    // carouselContainer.append(img);
 
     container.appendChild(card);
   });
@@ -197,6 +217,7 @@ const paginationFetch = async (limit = pageLimits, page = pages) => {
 
     allProducts = data;
     renderTheUI(allProducts);
+    // carosule();
   } catch (error) {
     console.error("Error fetching products:", error);
   }
@@ -279,3 +300,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Error populating categories:", error);
   }
 });
+
+// const carosule = () => {
+//   // this is carousel code
+//   setTimeout(() => {
+//     const carousel = document.getElementById("carousel");
+//     const cards = document.querySelectorAll(".cards-imgs");
+//     let index = 0;
+//     function autoScroll() {
+//       index++;
+//       if (index >= cards.length) index = 0;
+//       carousel.scrollTo({
+//         left: cards[index].offsetLeft,
+//         behavior: "smooth",
+//       });
+//     }
+
+//     // Auto-scroll every 3s
+//     let interval = setInterval(autoScroll, 3000);
+
+//     // Pause on hover
+//     carousel.addEventListener("mouseenter", () => clearInterval(interval));
+//     carousel.addEventListener("mouseleave", () => {
+//       interval = setInterval(autoScroll, 3000);
+//     });
+//   }, 1000);
+// };
