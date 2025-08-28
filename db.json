@@ -1,5 +1,12 @@
 {
   "users": [
+    {
+      "email": "hetukp12@gmail.com",
+      "password": "$2a$10$oRANali4Fr/VSdDHSWYVBugc0w9zCVY79dwF0m4wSZBUB6vFX.vgW",
+      "id": 1,
+      "age": "20",
+      "gender": "Male"
+    }
   ],
   "ageValid": [
     {

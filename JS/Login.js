@@ -8,7 +8,7 @@ setTimeout(() => {
   let cartDisplay = document.querySelector(".cartDisplay");
   // console.log('    🚀 ~ cartDisplay:', cartDisplay);
 
-  if (path == `../index.html` || path == "../index.html") {
+  if (path == `./index.html` || path == "./index.html") {
     cartDisplay.style.display = "none";
     cartDisplay.style.opacity = 0;
   }
@@ -104,8 +104,6 @@ const loginForm = async (e) => {
   let userData = {
     email,
     password,
-    age,
-    gender,
   };
 
   let response = await fetch(apiLogin, {
@@ -121,9 +119,22 @@ const loginForm = async (e) => {
 
   if (data.accessToken) {
     sessionStorage.setItem("token", data.accessToken);
-
     sessionStorage.setItem("age", age);
     sessionStorage.setItem("gender", gender);
+
+    try {
+      await fetch(`http://localhost:3000/users/${data.user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.accessToken}`,
+        },
+        body: JSON.stringify({ age, gender }),
+      });
+      console.log("✅ User updated with age & gender in db.json");
+    } catch (err) {
+      console.error("❌ Failed to update user with age/gender:", err);
+    }
 
     try {
       let ageres = await fetch(ageApi);

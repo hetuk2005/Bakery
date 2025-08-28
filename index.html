@@ -30,9 +30,7 @@
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
 
-avatarLoader();
-
-   addEventListener('DOMContentLoaded', ()=> {typePlaceholder()});
+   addEventListener('DOMContentLoaded', ()=> {typePlaceholder(),avatarLoader();});
 
     let styleTag = document.createElement("style");
     styleTag.textContent = NavStyle();
