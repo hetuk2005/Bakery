@@ -53,14 +53,19 @@ const renderTheUI = (value) => {
       </div>
             <div class="info">
                 <h3 class="id">id : ${el.id}</h3>
+                <h3 class="title">Title : ${el.title}</h3>
                 <p class="category">category : ${el.category}</p>
                 <p class="price">price : ${el.price}</p>
                 <div class="rating">
-                    <p>rate : ${el.rating.rate}</p>
+                    <p>rate : ${el.rating.rate} star</p>
                     </div>
-                    <button onclick="addToCart(${el.id})" class="btns">add</button>
+                    <button class="btns">add</button>
             </div>
         `;
+
+    card
+      .querySelector(".btns")
+      .addEventListener("click", (event) => addToCart(el.id, event));
 
     const img = card.querySelector("img");
 
@@ -82,7 +87,8 @@ const renderTheUI = (value) => {
   });
 };
 
-const addToCart = async (id) => {
+const addToCart = async (id, event) => {
+  if (event) event.preventDefault();
   let product = allProducts.find((el) => el.id === id);
 
   try {
@@ -99,7 +105,7 @@ const addToCart = async (id) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ count: existing.count + 1 }),
+        body: JSON.stringify({ quantity: existing.quantity + 1 }),
       });
       alert("Quantity updated ✔");
     } else {
@@ -110,7 +116,7 @@ const addToCart = async (id) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...product, count: 1 }),
+        body: JSON.stringify({ ...product, quantity: 1 }),
       });
 
       alert("Added to cart ✔");
@@ -143,7 +149,7 @@ const searchFunc = async () => {
 };
 
 let pages = 1;
-let pageLimits = 10;
+let pageLimits = 9;
 let lengthsOfAPI;
 let start;
 let end;
@@ -157,7 +163,7 @@ pagiDiv.innerHTML = `
 `;
 
 const paginationFetch = async (limit = pageLimits, page = pages) => {
-  let paginationApi = `http://localhost:3000/product?_limit=${limit}&_page=${page}`;
+  let paginationApi = `http://localhost:3000/products?_limit=${limit}&_page=${page}`;
 
   showSkeleton(6); // Show skeletons while loading
   let cartDisplay = document.querySelector(".cartDisplay");

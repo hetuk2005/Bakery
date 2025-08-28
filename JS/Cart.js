@@ -74,7 +74,7 @@ const cardRenderUI = (value) => {
                 <p class="price">price : ${el.price}</p>
                 <p class="description">description : ${el.description}</p>
                 <div class="rating">
-                    <p>rate : ${el.rating.rate}</p>
+                    <p>rate : ${el.rating.rate} star</p>
                     <p>count : ${el.quantity}</p>
                 </div>
                 <div class="btn_count">

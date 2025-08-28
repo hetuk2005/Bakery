@@ -83,7 +83,7 @@
         "count": 1
       },
       "quantity": 2,
-      "count": 2
+      "count": 3
     },
     {
       "id": 5,
@@ -141,30 +141,17 @@
       "quantity": 1
     },
     {
-      "id": 19,
-      "title": "Oreo Cake",
+      "id": 13,
+      "title": "Red Velvet Cake",
       "price": 350,
-      "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur sunt veniam adipisci. Sint, ut nobis.",
+      "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo, consequuntur qui?",
       "category": "Cake",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv7xeWomEeRg9h6dCnyWWZHhpwvrVOWcWypQ&s",
+      "image": "https://assets.giftalove.com/resources/common/giftimages/productimage2/tempting-red-velvet-cake.jpg",
       "rating": {
-        "rate": 3.3,
+        "rate": 4.7,
         "count": 1
       },
-      "count": 1
-    },
-    {
-      "id": 18,
-      "title": "Cheese Cake",
-      "price": 350,
-      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, inventore hic nesciunt quaerat itaque similique",
-      "category": "Cake",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn9rX8sikddEQL1KeYly6vh49MlYvjbrFahw&s",
-      "rating": {
-        "rate": 1.9,
-        "count": 1
-      },
-      "count": 1
+      "quantity": 1
     }
   ],
   "products": [
