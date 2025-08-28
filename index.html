@@ -23,10 +23,11 @@
 
         <footer id="footers"></footer>
     </body>
-    <script type="module" src="./JS/index.js"></script>
+    <script src="./JS/index.js"></script>
     <script type="module">
 
-    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav, avatarLoader} from './JS/import_export.js'
+    import { Navbar, NavStyle, Footers, goHome, loginFunc, cartFunc, SideBar, typePlaceholder, setActiveNav, avatarLoader,sortHigh, sortLow} from './JS/import_export.js'
+
 
     document.querySelector('.header').innerHTML = Navbar() + SideBar();
 
@@ -108,9 +109,51 @@ btn.addEventListener("click", () => {
         setActiveNav();
     }, 100)
 
-    
-// document.querySelector("#filterHigh").addEventListener("click", sortHigh);
-// document.querySelector("#filterLow").addEventListener("click", sortLow);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const highBtn = document.querySelector("#filterHigh");
+  const lowBtn = document.querySelector("#filterLow");
+
+  function filterHigh(arr) {
+    return [...arr].sort((a, b) => b.price - a.price);
+  }
+
+  function filterLow(arr) {
+    return [...arr].sort((a, b) => a.price - b.price);
+  }
+
+  if (highBtn) {
+    highBtn.addEventListener("click", () => {
+      let filtered = filterHigh(allProductsGlobal);
+      renderTheUI(filtered);
+
+      // show span with close
+      activeFilter.innerHTML = `<span class="high">High to Low <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
+
+      // add close event
+      document.querySelector("#closeFilter").addEventListener("click", () => {
+        activeFilter.innerHTML = "";
+        renderTheUI(allProducts); // reset to normal products
+      });
+    });
+  }
+
+  if (lowBtn) {
+    lowBtn.addEventListener("click", () => {
+      let filtered = filterLow(allProductsGlobal);
+      renderTheUI(filtered);
+
+      // show span with close
+      activeFilter.innerHTML = `<span class="high">Low to High <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
+
+      // add close event
+      document.querySelector("#closeFilter").addEventListener("click", () => {
+        activeFilter.innerHTML = "";
+        renderTheUI(allProducts); // reset to normal products
+      });
+    });
+  }
+});
 
 </script>
 

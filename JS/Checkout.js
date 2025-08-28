@@ -3,13 +3,17 @@ const apiCheckout = `http://localhost:3000/cart`;
 let subTotal;
 let grandTotal;
 
-const token = sessionStorage.getItem("token");
+let pages = 1;
+let pageLimits = 5;
+let lengthsOfAPI;
+let start;
+let end;
 
-let path = window.location.pathname;
+const token = sessionStorage.getItem("token");
 
 if (!token || token == "null" || token == "undefined") {
   alert("please login first....");
-  window.location = "../Login.html";
+  window.location = "Login.html";
 }
 
 const showSkeleton = (count = 6) => {
@@ -44,36 +48,20 @@ const showSkeleton = (count = 6) => {
   container.appendChild(table);
 };
 
-const checkoutFunc = async () => {
-  showSkeleton(6); // Show skeletons while loading
-  let apiCheckout_fetch = await fetch(apiCheckout);
-  let data_checkout = await apiCheckout_fetch.json();
+const paginationFetch = async (limit = pageLimits, page = pages) => {
+  const res = await fetch(`${apiCheckout}?_limit=${limit}&_page=${page}`);
+  const data = await res.json();
 
-  renderCheckout(data_checkout);
+  // Calculate total pages from header
+  lengthsOfAPI = Math.ceil(+res.headers.get("x-total-count") / pageLimits);
+
+  renderCheckout(data); // only pass data
 };
 
-/* 
-         <img class="image" src=${el.image} />
-            <div class="info">
-                <h3 class="id">id : ${el.id}</h3>
-                <p class="category">title : ${el.title}</p>
-                <p class="category">category : ${el.category}</p>
-                <p class="price">price : ${el.price}</p>
-                <p class="description">description : ${el.description}</p>
-                <div class="rating">
-                    <p>rate : ${el.rating.rate}</p>
-                    <p>count : ${el.count}</p>
-                </div>
-                <div class="btn_count">
-                <button onclick="deleteToCart(${el.id})" class="btns deletes">delete</button>
-                <div class="paginationCount">
-                <button class="btns neg" onclick="decrementCount(${el.id},${el.count})">-</button>
-                <span class="count">${el.count}</span>
-                <button class="btns pos" onclick="incrementCount(${el.id},${el.count})">+</button>
-                </div>
-                </div>
-            </div>
-*/
+const checkoutFunc = async () => {
+  showSkeleton(6);
+  paginationFetch(pageLimits, pages);
+};
 
 const renderCheckout = (value) => {
   const container = document.querySelector("#container");
@@ -100,7 +88,7 @@ const renderCheckout = (value) => {
 
   // Add rows dynamically
   value.forEach((el) => {
-    subTotal += el.price * el.count;
+    subTotal += el.price * el.quantity;
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -108,14 +96,14 @@ const renderCheckout = (value) => {
             <td>₹${el.price}</td>
             <td>
                 <button class="btns neg" onclick="decrementCount(${el.id}, ${
-      el.count
+      el.quantity
     })">-</button>
-                ${el.count}
+                ${el.quantity}
                 <button class="btns pos" onclick="incrementCount(${el.id}, ${
-      el.count
+      el.quantity
     })">+</button>
             </td>
-            <td>₹${el.price * el.count}</td>
+            <td>₹${el.price * el.quantity}</td>
         `;
     tbody.appendChild(row);
   });
@@ -142,7 +130,7 @@ const renderCheckout = (value) => {
 
     amountDiv_child_1.innerHTML = `       
         <h3>${els.title}</h3>
-        <p>$${els.price}</p>               
+        <p>₹${els.price}</p>               
         `;
     amountDiv_parent_1.append(amountDiv_child_1);
   });
@@ -162,14 +150,47 @@ const renderCheckout = (value) => {
 
   //  here i have to crate this ui -> https://pixso.net/tips/shopping-cart-design/
 
+  const pagiDiv = document.createElement("div");
+  pagiDiv.innerHTML = `
+  <button class="btns" id="decrementBtn">Prev</button>
+<span id="countPage">${pages} of ${lengthsOfAPI}</span>
+<button class="btns" id="incrementBtn">Next</button>
+  `;
+
+  amountDiv_main.prepend(pagiDiv);
+
   container.append(table, amountDiv_main);
+
+  const countPages = document.querySelector("#countPage");
+  document.querySelector("#incrementBtn").addEventListener("click", () => {
+    if (pages >= lengthsOfAPI) {
+      document.querySelector("#incrementBtn").disabled = true;
+      return;
+    } else if (pages > 1) {
+      document.querySelector("#decrementBtn").disabled = false;
+    }
+    pages++;
+    countPages.innerText = pages;
+    paginationFetch(pageLimits, pages);
+  });
+  document.querySelector("#decrementBtn").addEventListener("click", () => {
+    if (pages <= 1) {
+      document.querySelector("#decrementBtn").disabled = true;
+      return;
+    } else if (pages < lengthsOfAPI) {
+      document.querySelector("#incrementBtn").disabled = false;
+    }
+    pages--;
+    countPages.innerText = pages;
+    paginationFetch(pageLimits, pages);
+  });
 };
 
 const incrementCount = async (id, counts) => {
   try {
     await fetch(`${apiCheckout}/${id}`, {
       method: "PATCH",
-      body: JSON.stringify({ count: counts + 1 }),
+      body: JSON.stringify({ quantity: counts + 1 }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -193,7 +214,7 @@ const decrementCount = async (id, counts) => {
   try {
     await fetch(`${apiCheckout}/${id}`, {
       method: "PATCH",
-      body: JSON.stringify({ count: counts - 1 }),
+      body: JSON.stringify({ quantity: counts - 1 }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

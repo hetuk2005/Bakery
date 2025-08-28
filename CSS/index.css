@@ -479,10 +479,12 @@
   gap: 20px;
 }
 
-#index_body > #pagination > .btns:first-child {
+#index_body > #pagination > .btns:first-child,
+#decrementBtn {
   background: red;
 }
-#index_body > #pagination > .btns:last-child {
+#index_body > #pagination > .btns:last-child,
+#incrementBtn {
   background: green;
 }
 
@@ -626,7 +628,6 @@ h3 {
   height: 200px;
   object-fit: cover;
   border-top-left-radius: 20%;
-  opacity: 0.5;
   transition: filter 0.4s ease, opacity 0.4s ease;
 }
 

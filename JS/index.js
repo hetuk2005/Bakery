@@ -144,6 +144,9 @@ const searchFunc = async () => {
 
 let pages = 1;
 let pageLimits = 10;
+let lengthsOfAPI;
+let start;
+let end;
 
 const pagiDiv = document.querySelector("#pagination");
 
@@ -153,8 +156,8 @@ pagiDiv.innerHTML = `
 <button class="btns" id="incrementBtn">+</button>
 `;
 
-const paginationFetch = async (limit, page) => {
-  let paginationApi = `http://localhost:3000/products?_limit=${limit}&_page=${page}`;
+const paginationFetch = async (limit = pageLimits, page = pages) => {
+  let paginationApi = `http://localhost:3000/product?_limit=${limit}&_page=${page}`;
 
   showSkeleton(6); // Show skeletons while loading
   let cartDisplay = document.querySelector(".cartDisplay");
@@ -165,17 +168,26 @@ const paginationFetch = async (limit, page) => {
       fetch(apiCart),
     ]);
     // we have to apply loader into this....
-    console.log("🚀 ~ res1:", res1.ok);
+    // console.log('🚀 ~ res1:', res1.ok);
     const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
+
     let data = await data1;
+
     cartLengths = data2.length;
     if (cartLengths) {
       cartDisplay.style.display = "block";
-      cartDisplay.textContent = `${cartLengths}`;
+      cartDisplay.textContent = cartLengths;
     } else {
       cartDisplay.style.display = "none";
       cartDisplay.style.opacity = 0;
     }
+    // here we have the value of total and just set the total value
+
+    lengthsOfAPI = +res1.headers.get("x-total-count");
+
+    lengthsOfAPI = Math.ceil(lengthsOfAPI / pageLimits);
+
+    console.log(pages);
 
     allProducts = data;
     renderTheUI(allProducts);
@@ -186,11 +198,23 @@ const paginationFetch = async (limit, page) => {
 
 const countPages = document.querySelector("#countPage");
 document.querySelector("#incrementBtn").addEventListener("click", () => {
+  if (pages >= lengthsOfAPI) {
+    document.querySelector("#incrementBtn").disabled = true;
+    return;
+  } else if (pages > 1) {
+    document.querySelector("#decrementBtn").disabled = false;
+  }
   pages++;
   countPages.innerText = pages;
   paginationFetch(pageLimits, pages);
 });
 document.querySelector("#decrementBtn").addEventListener("click", () => {
+  if (pages <= 1) {
+    document.querySelector("#decrementBtn").disabled = true;
+    return;
+  } else if (pages < lengthsOfAPI) {
+    document.querySelector("#incrementBtn").disabled = false;
+  }
   pages--;
   countPages.innerText = pages;
   paginationFetch(pageLimits, pages);
@@ -206,53 +230,6 @@ const fetchAllProducts = async () => {
     console.error("Error fetching all products:", err);
   }
 };
-
-import { sortHigh, sortLow } from "./import_export.js";
-
-document.addEventListener("DOMContentLoaded", () => {
-  const highBtn = document.querySelector("#filterHigh");
-  const lowBtn = document.querySelector("#filterLow");
-
-  function filterHigh(arr) {
-    return [...arr].sort((a, b) => b.price - a.price);
-  }
-
-  function filterLow(arr) {
-    return [...arr].sort((a, b) => a.price - b.price);
-  }
-
-  if (highBtn) {
-    highBtn.addEventListener("click", () => {
-      let filtered = filterHigh(allProductsGlobal);
-      renderTheUI(filtered);
-
-      // show span with close
-      activeFilter.innerHTML = `<span class="high">High to Low <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
-
-      // add close event
-      document.querySelector("#closeFilter").addEventListener("click", () => {
-        activeFilter.innerHTML = "";
-        renderTheUI(allProducts); // reset to normal products
-      });
-    });
-  }
-
-  if (lowBtn) {
-    lowBtn.addEventListener("click", () => {
-      let filtered = filterLow(allProductsGlobal);
-      renderTheUI(filtered);
-
-      // show span with close
-      activeFilter.innerHTML = `<span class="high">Low to High <span style="cursor:pointer;" id="closeFilter">✕</span></span>`;
-
-      // add close event
-      document.querySelector("#closeFilter").addEventListener("click", () => {
-        activeFilter.innerHTML = "";
-        renderTheUI(allProducts); // reset to normal products
-      });
-    });
-  }
-});
 
 const filterFunc = async () => {
   let filter = document.querySelector("#filter").value;

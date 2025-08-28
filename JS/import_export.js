@@ -1,5 +1,5 @@
 const profileImg = new URL(
-  "https://raw.githubusercontent.com/hetuk2005/Fake_Store/23e121dcaef2e2c0abf0a202d185aa7d74ba9970/Utils/20-30%20Age.svg",
+  "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg",
   import.meta.url
 ).href;
 const searchImg = new URL(
@@ -46,7 +46,7 @@ export const Navbar = () => {
             <li class="cartFunc nav-link">cart</li>
             <span class="cartDisplay"></span>
         </ul>
-        <img src="" alt="profile-logo" id="avatar">
+        <img src="${profileImg}" alt="profile-logo" id="avatar">
         <div class="btn" id="toggleBtn">
          <strong>🌙</strong> 
       <strong>☀️</strong>
