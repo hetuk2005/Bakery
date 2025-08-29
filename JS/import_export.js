@@ -162,7 +162,7 @@ export const NavStyle = () => {
         width: 90%;
         margin: auto;
         border-radius:10px;
-        padding:15px 0
+        padding:15px 0;
         }
 
         .footer_text {
@@ -254,6 +254,8 @@ let interval;
 let typing;
 let cursorVisible = true;
 let showCursor = true;
+
+// Blink And Cursor In Placeholder
 
 function updatePlaceholder() {
   if (!input) return;
@@ -391,4 +393,12 @@ export const avatarLoader = () => {
     avatarImg.src =
       "https://raw.githubusercontent.com/hetuk2005/Anime-Website/760ad3d3e4a658d8ef9e8a29af795e5cb0e7da25/utils/Profile.svg";
   }
+};
+
+export const dayNight = () => {
+  //Day-Night-mode-code
+  const btn = document.getElementById("toggleBtn");
+  btn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
 };

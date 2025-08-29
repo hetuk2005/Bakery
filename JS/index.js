@@ -53,13 +53,15 @@ const renderTheUI = (value) => {
               <h3 class="id">id : ${el.id}</h3>
               <h3 class="title">Title : ${el.title}</h3>
               <p class="category">category : ${el.category}</p>
-              <p class="price">price : ${el.price}</p>
+              <p class="price">price : ₹${el.price}</p>
               <div class="rating">
                 <p>rate : ${el.rating.rate} star</p>
               </div>
               <button class="btns">add</button>
           </div>
         `;
+
+    card.addEventListener("click", () => detailsPage(el.id));
 
     card
       .querySelector(".btns")
@@ -223,7 +225,6 @@ const fetchAllProducts = async () => {
 
 const filterFunc = async () => {
   let filter = document.querySelector("#filter").value;
-  // e.g. "electronics", "jewelery", etc.
 
   try {
     let res = await fetch(apiProducts);
@@ -262,3 +263,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Error populating categories:", error);
   }
 });
+
+const detailsPage = async (id) => {
+  try {
+    // get product details
+    let res = await fetch(`${apiProducts}/${id}`);
+    let product = await res.json();
+
+    // make modal div
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    modal.style.display = "block"; // show it
+
+    // modal content
+    modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="${product.image}" alt="Product Image" class="modalImage">
+        <h2>${product.title}</h2>
+        <p><b>Category:</b> ${product.category}</p>
+        <p><b>Description:</b> ${product.description}</p>
+        <p><b>Price:</b> ₹${product.price}</p>
+        <p><b>Rating:</b> ${product.rating.rate} Star</p>
+      </div>
+    `;
+
+    // add modal to body
+    document.body.appendChild(modal);
+
+    // close when clicking X
+    modal.querySelector(".close").onclick = () => modal.remove();
+
+    // close when clicking outside the box
+    modal.onclick = (event) => {
+      if (event.target === modal) {
+        modal.remove();
+      }
+    };
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+};
