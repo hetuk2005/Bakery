@@ -41,41 +41,24 @@ const showSkeleton = (count = 6) => {
 };
 
 const renderTheUI = (value) => {
-  //  here i am creating the div inside that i am just adding the img
-  const prevContainer = document.querySelector(".containers");
-
-  const carouselContainer = document.createElement("div");
   container.innerHTML = ""; // Remove skeletons
-
-  //  here i am doing if i have the container then i will delete the previous one and append the new one....
-
-  if (prevContainer) prevContainer.remove();
-
-  carouselContainer.classList.add("containers");
-  carouselContainer.id = "carousel";
-  // ✅ append containers only ONCE
-  // document.body.prepend(carouselContainer);
-  document.body.insertBefore(carouselContainer, container);
 
   value.forEach((el) => {
     const card = document.createElement("div");
     card.classList.add("card_div");
 
     card.innerHTML = ` 
-            <div class="img-wrapper">
-        <div class="skeleton skeleton-image"></div>
-        <img class="image blur" src="${el.image}" loading="lazy" alt="product" />
-      </div>
-            <div class="info">
-                <h3 class="id">id : ${el.id}</h3>
-                <h3 class="title">Title : ${el.title}</h3>
-                <p class="category">category : ${el.category}</p>
-                <p class="price">price : ${el.price}</p>
-                <div class="rating">
-                    <p>rate : ${el.rating.rate} star</p>
-                    </div>
-                    <button class="btns">add</button>
-            </div>
+            <img class="image" loading="lazy" src="${el.image}" alt="product" />
+        <div class="info">
+              <h3 class="id">id : ${el.id}</h3>
+              <h3 class="title">Title : ${el.title}</h3>
+              <p class="category">category : ${el.category}</p>
+              <p class="price">price : ${el.price}</p>
+              <div class="rating">
+                <p>rate : ${el.rating.rate} star</p>
+              </div>
+              <button class="btns">add</button>
+          </div>
         `;
 
     card
@@ -83,25 +66,6 @@ const renderTheUI = (value) => {
       .addEventListener("click", (event) => addToCart(el.id, event));
 
     const img = card.querySelector("img");
-
-    if (img.complete) {
-      img.classList.add("loaded");
-      const skeleton = card.querySelector(".skeleton-image");
-      skeleton.style.opacity = 0;
-      setTimeout(() => skeleton.remove(), 400);
-    } else {
-      img.addEventListener("load", () => {
-        img.classList.add("loaded");
-        const skeleton = card.querySelector(".skeleton-image");
-        skeleton.style.opacity = 0;
-        setTimeout(() => skeleton.remove(), 400);
-      });
-    }
-
-    // img.src = el.image;
-    // img.alt = `img-${el.id}`;
-    // img.classList.add("cards-imgs");
-    // carouselContainer.append(img);
 
     container.appendChild(card);
   });
@@ -217,7 +181,6 @@ const paginationFetch = async (limit = pageLimits, page = pages) => {
 
     allProducts = data;
     renderTheUI(allProducts);
-    // carosule();
   } catch (error) {
     console.error("Error fetching products:", error);
   }
@@ -282,7 +245,6 @@ window.filterFunc = filterFunc;
 document.addEventListener("DOMContentLoaded", async () => {
   paginationFetch(pageLimits, pages);
   fetchAllProducts();
-
   try {
     let res = await fetch(apiProducts);
     let data = await res.json();
@@ -300,29 +262,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Error populating categories:", error);
   }
 });
-
-// const carosule = () => {
-//   // this is carousel code
-//   setTimeout(() => {
-//     const carousel = document.getElementById("carousel");
-//     const cards = document.querySelectorAll(".cards-imgs");
-//     let index = 0;
-//     function autoScroll() {
-//       index++;
-//       if (index >= cards.length) index = 0;
-//       carousel.scrollTo({
-//         left: cards[index].offsetLeft,
-//         behavior: "smooth",
-//       });
-//     }
-
-//     // Auto-scroll every 3s
-//     let interval = setInterval(autoScroll, 3000);
-
-//     // Pause on hover
-//     carousel.addEventListener("mouseenter", () => clearInterval(interval));
-//     carousel.addEventListener("mouseleave", () => {
-//       interval = setInterval(autoScroll, 3000);
-//     });
-//   }, 1000);
-// };
