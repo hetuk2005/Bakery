@@ -623,20 +623,22 @@ h3 {
 /* Modal box */
 .modal-content {
   background: #fff;
-  margin: 10% auto;
   padding: 20px;
   width: 90%;
   border-radius: 10px;
   position: relative;
+  top: 50px;
+  left: 80px;
 }
 
 .modalImage {
-  width: 97%;
-  height: 300px;
+  width: 50%;
+  height: 400px;
   margin: auto;
   margin-bottom: 20px;
   display: block;
   object-fit: cover;
+  border-radius: 15px;
 }
 
 /* Close button */

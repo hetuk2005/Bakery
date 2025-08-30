@@ -13,7 +13,7 @@ let cartLengths;
 setTimeout(() => {
   let cartDisplay = document.querySelector(".cartDisplay");
 
-  if (path == `../index.html` || path == `../index.html`) {
+  if (path == `./index.html` || path == `./index.html`) {
     cartDisplay.style.display = "block";
     cartDisplay.style.opacity = 1;
   }
